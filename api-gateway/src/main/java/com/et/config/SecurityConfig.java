@@ -11,10 +11,13 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final String[] freeResourceUrl={"/swagger-ui.html/**","/swagger-ui/**","/v3/api-docs/**","/swagger-resources/**","/api-docs/**","/aggregate/**"};
     @Bean
     public DefaultSecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
       return httpSecurity.authorizeHttpRequests(authorize -> authorize
-                      .anyRequest().authenticated())
+                              .requestMatchers(freeResourceUrl).permitAll()
+                      .anyRequest().authenticated()
+                      )
                 .oauth2ResourceServer(oauth2->
                         oauth2.jwt(Customizer.withDefaults())).build();
 
